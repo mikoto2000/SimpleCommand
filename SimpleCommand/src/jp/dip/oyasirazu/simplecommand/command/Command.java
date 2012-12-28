@@ -16,7 +16,12 @@ import java.util.List;
  * TODO: 標準出力・エラー出力が多いとロックするらしいのでそのあたりを調べる
  */
 public class Command {
-    
+
+    /**
+     * ProcessBuilder
+     */
+    private ProcessBuilder processBuilder;
+
     /**
      * コマンド文字列
      */
@@ -26,12 +31,21 @@ public class Command {
      * コマンド引数
      */
     private String[] args;
+
+    /**
+     * コンストラクタ
+     */
+    public Command() {
+        this(null);
+    }
+
     /**
      * コマンドを指定し、インスタンス化
      * @param command コマンド
      */
     public Command(String command) {
         this.command = command;
+        processBuilder = new ProcessBuilder();
     }
     
     public String getCommand() {
@@ -65,10 +79,10 @@ public class Command {
         List<String> command = buildCommand(args);
         
         // プロセスの作成
-        ProcessBuilder pb = new ProcessBuilder(command);
         Process process;
         try {
-            process = pb.start();
+            processBuilder.command(command);
+            process = processBuilder.start();
         } catch (IOException e) {
             throw new CommandException(e);
         }
