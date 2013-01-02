@@ -1,8 +1,6 @@
-package jp.dip.oyasirazu.simplecommand;
+package jp.dip.oyasirazu.simplecommand.command;
 
 import static org.junit.Assert.*;
-import jp.dip.oyasirazu.simplecommand.command.Command;
-import jp.dip.oyasirazu.simplecommand.command.CommandException;
 
 import org.junit.Test;
 
