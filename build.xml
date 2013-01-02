@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="SimpleCommand" default="compile" basedir="./">
+    <!-- main project -->
+    <property name="project" value="SimpleCommand" />
+    <property name="version" value="1.0" />
+    <property name="build.src" value="${project}/src" />
+    <property name="build.bin" value="${project}/bin" />
+    <property name="build.classes" value="${build.bin}/classes" />
+    <property name="jar.dest" value="${build.bin}/${project}-${version}.jar" />
+    <property name="javadoc.dest" value="${project}/javadoc" />
+    <path id="build.classpath">
+        <!-- none -->
+    </path>
+
+    <!-- test project -->
+    <property name="test.project" value="${project}Test" />
+    <property name="test.target" value="jp.dip.oyasirazu.simplecommand.command.AllTests" />
+    <property name="test.src" value="${test.project}/src" />
+    <property name="test.classes" value="${test.project}/bin/classes" />
+    <property name="junit4.jar" value="/usr/share/java/junit4.jar" />
+    <path id="test.classpath">
+        <pathelement location="${build.classes}" />
+        <pathelement location="${test.classes}" />
+        <pathelement location="${junit4.jar}" />
+    </path>
+
+    <!-- compile -->
+    <target name="compile">
+        <mkdir dir="${build.classes}" />
+        <javac srcdir="${build.src}" destdir="${build.classes}" classpath="" debug="${debug}">
+            <classpath refid="build.classpath" />
+        </javac>
+    </target>
+
+    <!-- create javadoc -->
+    <target name="javadoc">
+        <javadoc packagenames="*" sourcepath="${build.src}" encoding="UTF-8" charset="UTF-8" destdir="${javadoc.dest}">
+            <classpath refid="build.classpath" />
+        </javadoc>
+    </target>
+
+    <!-- create jar -->
+    <target name="jar" depends="compile">
+        <jar jarfile="${jar.dest}" basedir="${build.classes}" />
+    </target>
+
+    <!-- compile test-->
+    <target name="test-compile" depends="compile">
+        <mkdir dir="${test.classes}" />
+        <javac srcdir="${test.src}" debug="${debug}" destdir="${test.classes}">
+            <classpath refid="test.classpath" />
+        </javac>
+    </target>
+
+    <!-- run test-->
+    <target name="test-run" depends="test-compile">
+        <junit fork="true" haltonfailure ="no" dir="SimpleCommandTest">
+            <test name="${test.target}" />
+            <formatter type="plain" usefile="false" />
+            <classpath refid="test.classpath" />
+        </junit>
+    </target>
+
+    <!-- clean -->
+    <target name="clean">
+        <delete dir="${build.bin}" />
+        <delete dir="${javadoc.dest}" />
+        <delete dir="${test.bin}" />
+    </target>
+</project>
